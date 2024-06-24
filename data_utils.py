@@ -175,10 +175,8 @@ def save_in_data_set_to_scv(df,path):
     
 def download(url:str, dest_dir:Path, save_name:str, suffix=None) -> Path:
     assert isinstance(dest_dir, Path), "dest_dir must be a Path object"
-    if dest_dir.exists():
-        print('Data set is already exist')
-        return
-    dest_dir.mkdir()
+    if not dest_dir.exists():
+        dest_dir.mkdir()
     if save_name == None: filename = url.split('/')[-1]
     else: filename = save_name+suffix
     file_path = dest_dir / filename
