@@ -181,12 +181,13 @@ def download(url:str, dest_dir:Path, save_name:str, suffix=None) -> Path:
     else: filename = save_name+suffix
     file_path = dest_dir / filename
     if not file_path.exists():
+        print(url)
         print(f"Downloading {file_path}")
         with open(f'{file_path}', 'wb') as f:
-            response = requests.get(url, stream=True)
+            response = requests.get(url, timeout=90,stream=True)
             total = int(response.headers.get('content-length'))
             with tqdm(total=total, unit='B', unit_scale=True, desc=filename) as pbar:
-                for data in response.iter_content(chunk_size=1024*1024):
+                for data in response.iter_content(chunk_size=10*1024*1024):
                     f.write(data)
                     pbar.update(1024*1024)
     else:
